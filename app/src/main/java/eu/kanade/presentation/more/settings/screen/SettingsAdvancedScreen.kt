@@ -55,6 +55,7 @@ import eu.kanade.tachiyomi.network.PREF_DOH_NJALLA
 import eu.kanade.tachiyomi.network.PREF_DOH_QUAD101
 import eu.kanade.tachiyomi.network.PREF_DOH_QUAD9
 import eu.kanade.tachiyomi.network.PREF_DOH_SHECAN
+import eu.kanade.tachiyomi.network.TorNetworkService
 import eu.kanade.tachiyomi.source.AndroidSourceManager
 import eu.kanade.tachiyomi.ui.more.OnboardingScreen
 import eu.kanade.tachiyomi.util.CrashLogUtil
@@ -96,6 +97,7 @@ import tachiyomi.presentation.core.i18n.stringResource
 import tachiyomi.presentation.core.util.collectAsState
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
+import uy.kohesive.injekt.injectLazy
 import java.io.File
 
 object SettingsAdvancedScreen : SearchableSettings {
@@ -237,6 +239,8 @@ object SettingsAdvancedScreen : SearchableSettings {
         val userAgentPref = networkPreferences.defaultUserAgent()
         val userAgent by userAgentPref.collectAsState()
 
+        val torNetworkService: TorNetworkService by injectLazy()
+
         return Preference.PreferenceGroup(
             title = stringResource(MR.strings.label_network),
             preferenceItems = persistentListOf(
@@ -314,6 +318,22 @@ object SettingsAdvancedScreen : SearchableSettings {
                         context.toast(MR.strings.requires_app_restart)
                     },
                 ),
+                Preference.PreferenceItem.SwitchPreference(
+                    pref = networkPreferences.useTorNetwork(),
+                    title = stringResource(SYMR.strings.pref_use_tor_network),
+                    subtitle = context.stringResource(
+                        SYMR.strings.pref_use_tor_network_summary,
+                        if (torNetworkService.isConnected()) {
+                            context.stringResource(SYMR.strings.connected)
+                        } else {
+                            context.stringResource(SYMR.strings.not_connected)
+                        },
+                    ),
+                    onValueChanged = {
+                        context.toast(MR.strings.requires_app_restart)
+                        true
+                    },
+                )
             ),
         )
     }

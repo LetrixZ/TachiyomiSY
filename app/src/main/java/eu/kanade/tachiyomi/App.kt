@@ -52,6 +52,7 @@ import eu.kanade.tachiyomi.di.PreferenceModule
 import eu.kanade.tachiyomi.di.SYPreferenceModule
 import eu.kanade.tachiyomi.network.NetworkHelper
 import eu.kanade.tachiyomi.network.NetworkPreferences
+import eu.kanade.tachiyomi.network.TorNetworkService
 import eu.kanade.tachiyomi.ui.base.delegate.SecureActivityDelegate
 import eu.kanade.tachiyomi.util.system.DeviceUtil
 import eu.kanade.tachiyomi.util.system.WebViewUtil
@@ -179,6 +180,7 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
         }
 
         initializeMigrator()
+        initializeTorNetwork()
     }
 
     private fun initializeMigrator() {
@@ -196,6 +198,13 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
                 preference.set(BuildConfig.VERSION_CODE)
             },
         )
+    }
+
+    private fun initializeTorNetwork() {
+        if (networkPreferences.useTorNetwork().get()) {
+            val torNetworkService: TorNetworkService by injectLazy()
+            torNetworkService.init()
+        }
     }
 
     override fun newImageLoader(context: Context): ImageLoader {

@@ -101,6 +101,9 @@ voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", vers
 spotless-gradle = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
 ktlint-core = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "ktlint-core" }
 
+tor-android = { module = "info.guardianproject:tor-android", version.ref = "0.4.8.12" }
+jtorctl = { module = "info.guardianproject:jtorctl", version.ref = "0.4.5.7" }
+
 [bundles]
 okhttp = ["okhttp-core", "okhttp-logging", "okhttp-brotli", "okhttp-dnsoverhttps"]
 js-engine = ["quickjs-android"]

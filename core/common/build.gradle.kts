@@ -58,5 +58,7 @@ dependencies {
     implementation(sylibs.xlog)
     implementation(libs.injekt.core)
     implementation(sylibs.exifinterface)
+    implementation(libs.tor.android)
+    implementation(libs.jtorctl)
     // SY <--
 }

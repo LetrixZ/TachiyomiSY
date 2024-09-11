@@ -711,4 +711,11 @@
 
     <!-- Humanize time -->
     <string name="humanize_fallback">moments ago</string>
+
+    <!-- Tor network -->
+    <string name="pref_use_tor_network">Use Tor Network</string>
+    <string name="pref_use_tor_network_summary">Enable to automatically open a Tor connection that can be used for some extensions that need it.\nWARNING: This will enable a Tor proxy service on port 9050 on your device while the app is running.\nStatus: %1$s</string>
+    <string name="tor_network_connected">Connected to the Tor network</string>
+    <string name="connected">Connected</string>
+    <string name="not_connected">Not connected</string>
 </resources>

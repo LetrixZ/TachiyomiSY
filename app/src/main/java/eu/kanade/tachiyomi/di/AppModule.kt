@@ -22,6 +22,8 @@ import eu.kanade.tachiyomi.data.track.TrackerManager
 import eu.kanade.tachiyomi.extension.ExtensionManager
 import eu.kanade.tachiyomi.network.JavaScriptEngine
 import eu.kanade.tachiyomi.network.NetworkHelper
+import eu.kanade.tachiyomi.network.NetworkPreferences
+import eu.kanade.tachiyomi.network.TorNetworkService
 import eu.kanade.tachiyomi.source.AndroidSourceManager
 import eu.kanade.tachiyomi.util.storage.CbzCrypto
 import exh.eh.EHentaiUpdateHelper
@@ -61,6 +63,7 @@ private const val LEGACY_DATABASE_NAME = "tachiyomi.db"
 class AppModule(val app: Application) : InjektModule {
     // SY -->
     private val securityPreferences: SecurityPreferences by injectLazy()
+    private val networkPreferences: NetworkPreferences by injectLazy()
     // SY <--
 
     override fun InjektRegistrar.registerInjectables() {
@@ -170,6 +173,8 @@ class AppModule(val app: Application) : InjektModule {
         addSingletonFactory { EHentaiUpdateHelper(app) }
 
         addSingletonFactory { PagePreviewCache(app) }
+
+        addSingletonFactory { TorNetworkService(app) }
         // SY <--
 
         // Asynchronously init expensive components for a faster cold start
