@@ -9,6 +9,7 @@ import eu.kanade.tachiyomi.data.backup.models.BackupExtensionRepos
 import eu.kanade.tachiyomi.data.backup.models.BackupManga
 import eu.kanade.tachiyomi.data.backup.models.BackupPreference
 import eu.kanade.tachiyomi.data.backup.models.BackupSavedSearch
+import eu.kanade.tachiyomi.data.backup.models.BackupSmartCategory
 import eu.kanade.tachiyomi.data.backup.models.BackupSourcePreferences
 import eu.kanade.tachiyomi.data.backup.restore.restorers.CategoriesRestorer
 import eu.kanade.tachiyomi.data.backup.restore.restorers.ExtensionRepoRestorer
@@ -100,7 +101,10 @@ class BackupRestorer(
 
         coroutineScope {
             if (options.categories) {
-                restoreCategories(backup.backupCategories)
+                restoreCategories(
+                    backup.backupCategories,
+                    backup.backupSmartCategories.takeIf { options.smartCategories },
+                )
             }
             // SY -->
             if (options.savedSearches) {
@@ -124,9 +128,12 @@ class BackupRestorer(
         }
     }
 
-    private fun CoroutineScope.restoreCategories(backupCategories: List<BackupCategory>) = launch {
+    private fun CoroutineScope.restoreCategories(
+        backupCategories: List<BackupCategory>,
+        backupSmartCategories: List<BackupSmartCategory>?,
+    ) = launch {
         ensureActive()
-        categoriesRestorer(backupCategories)
+        categoriesRestorer(backupCategories, backupSmartCategories)
 
         restoreProgress += 1
         notifier.showRestoreProgress(

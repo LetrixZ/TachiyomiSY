@@ -10,6 +10,7 @@ import eu.kanade.tachiyomi.data.backup.create.creators.ExtensionRepoBackupCreato
 import eu.kanade.tachiyomi.data.backup.create.creators.MangaBackupCreator
 import eu.kanade.tachiyomi.data.backup.create.creators.PreferenceBackupCreator
 import eu.kanade.tachiyomi.data.backup.create.creators.SavedSearchBackupCreator
+import eu.kanade.tachiyomi.data.backup.create.creators.SmartCategoriesBackupCreator
 import eu.kanade.tachiyomi.data.backup.create.creators.SourcesBackupCreator
 import eu.kanade.tachiyomi.data.backup.models.Backup
 import eu.kanade.tachiyomi.data.backup.models.BackupCategory
@@ -17,6 +18,7 @@ import eu.kanade.tachiyomi.data.backup.models.BackupExtensionRepos
 import eu.kanade.tachiyomi.data.backup.models.BackupManga
 import eu.kanade.tachiyomi.data.backup.models.BackupPreference
 import eu.kanade.tachiyomi.data.backup.models.BackupSavedSearch
+import eu.kanade.tachiyomi.data.backup.models.BackupSmartCategory
 import eu.kanade.tachiyomi.data.backup.models.BackupSource
 import eu.kanade.tachiyomi.data.backup.models.BackupSourcePreferences
 import kotlinx.serialization.protobuf.ProtoBuf
@@ -57,6 +59,7 @@ class BackupCreator(
     private val sourcesBackupCreator: SourcesBackupCreator = SourcesBackupCreator(),
     // SY -->
     private val savedSearchBackupCreator: SavedSearchBackupCreator = SavedSearchBackupCreator(),
+    private val smartCategoriesBackupCreator: SmartCategoriesBackupCreator = SmartCategoriesBackupCreator(),
     private val getMergedManga: GetMergedManga = Injekt.get(),
     private val handler: DatabaseHandler = Injekt.get(),
     // SY <--
@@ -102,6 +105,7 @@ class BackupCreator(
                 backupSourcePreferences = backupSourcePreferences(options),
                 // SY -->
                 backupSavedSearches = backupSavedSearches(options),
+                backupSmartCategories = backupSmartCategories(options),
                 // SY <--
             )
 
@@ -174,6 +178,12 @@ class BackupCreator(
         if (!options.savedSearches) return emptyList()
 
         return savedSearchBackupCreator()
+    }
+
+    suspend fun backupSmartCategories(options: BackupOptions): List<BackupSmartCategory> {
+        if (!options.smartCategories) return emptyList()
+
+        return smartCategoriesBackupCreator()
     }
     // SY <--
 

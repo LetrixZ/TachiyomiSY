@@ -93,6 +93,7 @@ class SyncManager(
             customInfo = syncOptions.customInfo,
             readEntries = syncOptions.readEntries,
             savedSearches = syncOptions.savedSearches,
+            smartCategories = syncOptions.smartCategories,
             // SY <--
         )
 
@@ -108,6 +109,7 @@ class SyncManager(
 
             // SY -->
             backupSavedSearches = backupCreator.backupSavedSearches(backupOptions),
+            backupSmartCategories = backupCreator.backupSmartCategories(backupOptions),
             // SY <--
         )
         logcat(LogPriority.DEBUG) { "End create backup" }
@@ -182,6 +184,7 @@ class SyncManager(
 
             // SY -->
             backupSavedSearches = remoteBackup.backupSavedSearches,
+            backupSmartCategories = remoteBackup.backupSmartCategories,
             // SY <--
         )
 
